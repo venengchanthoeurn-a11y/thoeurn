@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Lesson</title>
+
+    <!-- Prism.js for Syntax Highlighting -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+    <style>
+      /* === GLOBAL STYLES === */
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: #fff;
+        line-height: 1.6;
+        scroll-behavior: smooth;
+      }
+
+      header {
+        text-align: center;
+        padding: 40px 20px;
+        background: rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        border-bottom: 2px solid #00ffe1;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        color: #00ffe1;
+      }
+      header p {
+        font-size: 1.1em;
+        color: #ccc;
+      }
+
+      /* NAVBAR */
+      nav {
+        background: rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        flex-wrap: wrap;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      nav a {
+        color: #00ffe1;
+        margin: 8px 15px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+      nav a:hover {
+        color: #fff;
+        text-shadow: 0 0 8px #00ffe1;
+      }
+
+      /* SECTIONS */
+      section {
+        padding: 30px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .lesson {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        margin-bottom: 35px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-left: 6px solid #00ffe1;
+      }
+      .lesson:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.15);
+      }
+      .lesson h2 {
+        color: #00ffe1;
+        margin-top: 0;
+      }
+
+      pre {
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+
+      button.toggle,
+      button.run {
+        background: #00ffe1;
+        border: none;
+        color: #000;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 10px;
+        margin-right: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      button.toggle:hover,
+      button.run:hover {
+        background: #00bfa6;
+        transform: scale(1.05);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .output {
+        background: #111;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        color: #00ff88;
+        font-family: monospace;
+      }
+
+      /* FOOTER */
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9em;
+        background: rgba(0, 0, 0, 0.3);
+        color: #ccc;
+        border-top: 1px solid #00ffe1;
+      }
+      footer strong {
+        color: #00ffe1;
+      }
+
+      /* NEW STYLES FOR ENHANCEMENTS */
+      .exercise {
+        background: rgba(0, 255, 225, 0.1);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        border-left: 4px solid #00ff88;
+      }
+
+      .exercise h3 {
+        color: #00ff88;
+        margin-top: 0;
+      }
+
+      .test-container {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+      }
+
+      .test-container h3 {
+        color: #ffcc00;
+      }
+
+      .test-question {
+        margin-bottom: 15px;
+      }
+
+      .test-option {
+        margin: 8px 0;
+      }
+
+      .test-option input {
+        margin-right: 10px;
+      }
+
+      .test-submit {
+        background: #ffcc00;
+        color: #000;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .test-result {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .correct {
+        background: rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+      }
+
+      .incorrect {
+        background: rgba(255, 0, 0, 0.2);
+        color: #ff6666;
+      }
+
+      .syntax-highlight {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        font-family: monospace;
+      }
+
+      .doc-section {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+      }
+
+      .doc-section h3 {
+        color: #ffcc00;
+      }
+
+      .code-comment {
+        color: #888;
+      }
+
+      .tab-buttons {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      .tab-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 5px 5px 0 0;
+        margin-right: 5px;
+      }
+
+      .tab-button.active {
+        background: #00ffe1;
+        color: #000;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>JavaScript Lesson</h1>
+      <h2 style="color: greenyellow">Prepared By Ven.Thoeurn</h2>
+    </header>
+
+    <nav>
+      <a href="#operators">Operators</a>
+      <a href="#conditional">Conditionals</a>
+      <a href="#loops">Loops</a>
+      <a href="#functions">Functions</a>
+      <a href="#objects">Objects</a>
+      <a href="#dom">DOM</a>
+      <a href="#events">Events</a>
+      <a href="#json">JSON</a>
+      <a href="#classes">Classes</a>
+      <a href="#modules">Modules</a>
+      <a href="#async">Async</a>
+    </nav>
+
+    <section>
+      <!-- 3. OPERATORS -->
+      <div class="lesson" id="operators">
+        <h2>3️⃣ Operators (ការប្រមាណវិធី)</h2>
+        <p><strong>Arithmetic:</strong> +, -, *, /, %, ++, --</p>
+        <p><strong>Assignment:</strong> =, +=, -=, *=, /=, %=</p>
+        <p><strong>Comparison:</strong> ==, ===, !=, >, <, >=, <=</p>
+        <p><strong>Logical:</strong> &&, ||, !</p>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            JavaScript operators are symbols used to perform operations on
+            operands. They are classified into several types:
+          </p>
+          <ul>
+            <li>
+              <strong>Arithmetic Operators:</strong> Perform mathematical
+              operations
+            </li>
+            <li>
+              <strong>Assignment Operators:</strong> Assign values to variables
+            </li>
+            <li>
+              <strong>Comparison Operators:</strong> Compare two values and
+              return a boolean
+            </li>
+            <li>
+              <strong>Logical Operators:</strong> Combine multiple conditions
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'operators-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'operators-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'operators-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="operators-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Arithmetic Operators
+let a = 10, b = 3;
+console.log(a + b);  // 13
+console.log(a - b);  // 7
+console.log(a * b);  // 30
+console.log(a / b);  // 3.333...
+console.log(a % b);  // 1 (remainder)
+console.log(a++);    // 10 (post-increment)
+console.log(++a);    // 12 (pre-increment)
+
+// Assignment Operators
+let x = 5;
+x += 3;  // x = x + 3 → 8
+x -= 2;  // x = x - 2 → 6
+x *= 4;  // x = x * 4 → 24
+x /= 3;  // x = x / 3 → 8
+
+// Comparison Operators
+console.log(5 == "5");   // true (loose equality)
+console.log(5 === "5");  // false (strict equality)
+console.log(5 != "5");   // false
+console.log(5 !== "5");  // true
+console.log(5 > 3);      // true
+console.log(5 < 3);      // false
+
+// Logical Operators
+console.log(true && false);  // false
+console.log(true || false);  // true
+console.log(!true);          // false
+          </code></pre>
+        </div>
+
+        <div id="operators-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Calculate Area</h3>
+            <p>
+              Create a program that calculates the area of a rectangle given its
+              width and height.
+            </p>
+            <button class="run" onclick="runExercise1()">Run Solution</button>
+            <div id="exercise1-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Compare Numbers</h3>
+            <p>
+              Write a function that takes two numbers and returns the larger
+              one. If equal, return "Equal".
+            </p>
+            <button class="run" onclick="runExercise2()">Run Solution</button>
+            <div id="exercise2-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="operators-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>1. What is the result of: <code>5 + "5"</code>?</p>
+              <div class="test-option">
+                <input type="radio" name="q1" value="a" /> 10
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q1" value="b" /> "55"
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q1" value="c" /> Error
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. Which operator checks both value and type?</p>
+              <div class="test-option">
+                <input type="radio" name="q2" value="a" /> ==
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q2" value="b" /> ===
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q2" value="c" /> =
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkOperatorsTest()">
+              Submit Answers
+            </button>
+            <div id="operators-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CONDITIONAL STATEMENTS -->
+      <div class="lesson" id="conditional">
+        <h2>4️⃣ Conditional Statements</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            Conditional statements control the flow of execution based on
+            conditions:
+          </p>
+          <ul>
+            <li>
+              <strong>if/else:</strong> Executes code based on a condition
+            </li>
+            <li>
+              <strong>switch:</strong> Executes different code blocks based on
+              different cases
+            </li>
+            <li>
+              <strong>ternary operator:</strong> Shorthand for simple if/else
+              statements
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'conditional-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'conditional-exercises')"
+          >
+            Exercises
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'conditional-test')"
+          >
+            Test
+          </button>
+        </div>
+
+        <div id="conditional-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// if/else statement
+let age = 18;
+if(age >= 18){
+    console.log("Adult");
+} else {
+    console.log("Child");
+}
+
+// else if
+let score = 85;
+if(score >= 90){
+    console.log("A");
+} else if(score >= 80){
+    console.log("B");
+} else if(score >= 70){
+    console.log("C");
+} else {
+    console.log("F");
+}
+
+// switch statement
+let day = 3;
+switch(day){
+  case 1: 
+    console.log("Monday"); 
+    break;
+  case 2: 
+    console.log("Tuesday"); 
+    break;
+  case 3: 
+    console.log("Wednesday"); 
+    break;
+  default: 
+    console.log("Unknown day");
+}
+
+// ternary operator
+let isRaining = true;
+let activity = isRaining ? "Stay inside" : "Go outside";
+console.log(activity); // "Stay inside"
+          </code></pre>
+        </div>
+
+        <div id="conditional-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Grade Calculator</h3>
+            <p>
+              Create a function that takes a score (0-100) and returns the
+              corresponding grade (A, B, C, D, F).
+            </p>
+            <button class="run" onclick="runGradeExercise()">
+              Run Solution
+            </button>
+            <div id="grade-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Day of Week</h3>
+            <p>
+              Write a function that takes a number (1-7) and returns the
+              corresponding day of the week.
+            </p>
+            <button class="run" onclick="runDayExercise()">Run Solution</button>
+            <div id="day-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="conditional-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>
+                1. What will this code output:
+                <code>console.log(0 ? "Truthy" : "Falsy")</code>?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q3" value="a" /> Truthy
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q3" value="b" /> Falsy
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q3" value="c" /> Error
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. Which statement is used to exit a switch case?</p>
+              <div class="test-option">
+                <input type="radio" name="q4" value="a" /> exit
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q4" value="b" /> break
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q4" value="c" /> return
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkConditionalTest()">
+              Submit Answers
+            </button>
+            <div id="conditional-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. LOOPS -->
+      <div class="lesson" id="loops">
+        <h2>5️⃣ Loops (រង្វិល)</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>Loops execute a block of code multiple times:</p>
+          <ul>
+            <li>
+              <strong>for:</strong> Executes code a specific number of times
+            </li>
+            <li>
+              <strong>while:</strong> Executes code while a condition is true
+            </li>
+            <li>
+              <strong>do...while:</strong> Executes code at least once, then
+              repeats while condition is true
+            </li>
+            <li>
+              <strong>for...of:</strong> Iterates over iterable objects (arrays,
+              strings)
+            </li>
+            <li><strong>for...in:</strong> Iterates over object properties</li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'loops-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'loops-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'loops-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="loops-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// for loop
+for(let i=0; i<5; i++){
+    console.log(i); // 0, 1, 2, 3, 4
+}
+
+// while loop
+let i = 0;
+while(i < 5){
+    console.log(i);
+    i++;
+}
+
+// do...while loop
+let j = 0;
+do {
+    console.log(j);
+    j++;
+} while(j < 5);
+
+// for...of loop (arrays)
+let fruits = ["apple", "banana", "orange"];
+for(let fruit of fruits){
+    console.log(fruit); // "apple", "banana", "orange"
+}
+
+// for...in loop (objects)
+let person = {name: "John", age: 30, city: "New York"};
+for(let key in person){
+    console.log(key + ": " + person[key]); // "name: John", "age: 30", etc.
+}
+
+// Breaking and continuing loops
+for(let i=0; i<10; i++){
+    if(i === 5) break; // exits the loop
+    if(i % 2 === 0) continue; // skips to next iteration
+    console.log(i); // 1, 3
+}
+          </code></pre>
+        </div>
+
+        <div id="loops-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Sum of Numbers</h3>
+            <p>
+              Write a function that calculates the sum of all numbers from 1 to
+              n.
+            </p>
+            <button class="run" onclick="runSumExercise()">Run Solution</button>
+            <div id="sum-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Factorial</h3>
+            <p>
+              Write a function that calculates the factorial of a number (n!).
+            </p>
+            <button class="run" onclick="runFactorialExercise()">
+              Run Solution
+            </button>
+            <div id="factorial-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="loops-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>1. Which loop always executes at least once?</p>
+              <div class="test-option">
+                <input type="radio" name="q5" value="a" /> for
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q5" value="b" /> while
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q5" value="c" /> do...while
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. What does the 'continue' statement do in a loop?</p>
+              <div class="test-option">
+                <input type="radio" name="q6" value="a" /> Exits the loop
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q6" value="b" /> Skips to the next
+                iteration
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q6" value="c" /> Restarts the loop
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkLoopsTest()">
+              Submit Answers
+            </button>
+            <div id="loops-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. FUNCTIONS -->
+      <div class="lesson" id="functions">
+        <h2>6️⃣ Functions (មុខងារ)</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            Functions are reusable blocks of code that perform specific tasks:
+          </p>
+          <ul>
+            <li><strong>Function Declaration:</strong> function name() { }</li>
+            <li>
+              <strong>Function Expression:</strong> const name = function() { }
+            </li>
+            <li><strong>Arrow Function:</strong> const name = () => { }</li>
+            <li>
+              <strong>Parameters & Arguments:</strong> Values passed to
+              functions
+            </li>
+            <li>
+              <strong>Return Statement:</strong> Returns a value from a function
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'functions-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'functions-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'functions-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="functions-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Function Declaration
+function hello(name){
+    return "Hi " + name;
+}
+
+// Function Expression
+const hi = function(name) {
+    return "Hi " + name;
+};
+
+// Arrow Function
+const greet = (name) => "Hi " + name;
+
+// Function with multiple parameters
+function add(a, b) {
+    return a + b;
+}
+
+// Function with default parameters
+function multiply(a, b = 1) {
+    return a * b;
+}
+
+// Higher-order function (function that takes/returns functions)
+function createMultiplier(multiplier) {
+    return function(num) {
+        return num * multiplier;
+    };
+}
+const double = createMultiplier(2);
+console.log(double(5)); // 10
+
+// Immediately Invoked Function Expression (IIFE)
+(function() {
+    console.log("This runs immediately!");
+})();
+          </code></pre>
+        </div>
+
+        <div id="functions-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Power Function</h3>
+            <p>
+              Create a function that takes a base and exponent and returns the
+              result (base^exponent).
+            </p>
+            <button class="run" onclick="runPowerExercise()">
+              Run Solution
+            </button>
+            <div id="power-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Palindrome Checker</h3>
+            <p>
+              Write a function that checks if a string is a palindrome (reads
+              the same forwards and backwards).
+            </p>
+            <button class="run" onclick="runPalindromeExercise()">
+              Run Solution
+            </button>
+            <div id="palindrome-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="functions-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>
+                1. Which function type is hoisted (can be called before
+                declaration)?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q7" value="a" /> Function Declaration
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q7" value="b" /> Function Expression
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q7" value="c" /> Arrow Function
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. What is the value of 'this' inside an arrow function?</p>
+              <div class="test-option">
+                <input type="radio" name="q8" value="a" /> The global object
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q8" value="b" /> The object that
+                called the function
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q8" value="c" /> The lexical context
+                (where it was defined)
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkFunctionsTest()">
+              Submit Answers
+            </button>
+            <div id="functions-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. OBJECTS & ARRAYS -->
+      <div class="lesson" id="objects">
+        <h2>7️⃣ Objects & Arrays</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            Objects and arrays are fundamental data structures in JavaScript:
+          </p>
+          <ul>
+            <li><strong>Objects:</strong> Store key-value pairs</li>
+            <li>
+              <strong>Arrays:</strong> Store ordered collections of values
+            </li>
+            <li>
+              <strong>Methods:</strong> Functions that are properties of objects
+            </li>
+            <li>
+              <strong>Array Methods:</strong> Built-in functions for array
+              manipulation
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'objects-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'objects-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'objects-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="objects-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Objects
+let user = { 
+    name: "Chan", 
+    age: 20,
+    greet: function() {
+        return "Hello, " + this.name;
+    }
+};
+
+// Accessing properties
+console.log(user.name);        // "Chan"
+console.log(user["age"]);      // 20
+console.log(user.greet());     // "Hello, Chan"
+
+// Adding properties
+user.city = "Phnom Penh";
+
+// Arrays
+let list = [10, 20, 30];
+let fruits = ["apple", "banana", "orange"];
+
+// Array methods
+list.push(40);           // Add to end
+list.pop();              // Remove from end
+list.unshift(0);         // Add to beginning
+list.shift();            // Remove from beginning
+
+// Array iteration methods
+let doubled = list.map(num => num * 2);
+let evenNumbers = list.filter(num => num % 2 === 0);
+let sum = list.reduce((acc, num) => acc + num, 0);
+
+// Destructuring
+let {name, age} = user;
+let [first, second] = list;
+
+// Spread operator
+let newList = [...list, 50, 60];
+let newUser = {...user, country: "Cambodia"};
+          </code></pre>
+        </div>
+
+        <div id="objects-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Object Manipulation</h3>
+            <p>
+              Create a person object with name, age, and city properties. Add a
+              method that returns a greeting.
+            </p>
+            <button class="run" onclick="runObjectExercise()">
+              Run Solution
+            </button>
+            <div id="object-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Array Operations</h3>
+            <p>
+              Given an array of numbers, filter out even numbers and then double
+              the remaining ones.
+            </p>
+            <button class="run" onclick="runArrayExercise()">
+              Run Solution
+            </button>
+            <div id="array-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="objects-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>1. Which method adds elements to the end of an array?</p>
+              <div class="test-option">
+                <input type="radio" name="q9" value="a" /> push
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q9" value="b" /> pop
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q9" value="c" /> unshift
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>
+                2. How do you access a property named "first name" in an object?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q10" value="a" /> obj.first name
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q10" value="b" /> obj["first name"]
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q10" value="c" /> obj->first name
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkObjectsTest()">
+              Submit Answers
+            </button>
+            <div id="objects-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. DOM MANIPULATION -->
+      <div class="lesson" id="dom">
+        <h2>8️⃣ DOM Manipulation</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            The Document Object Model (DOM) represents the structure of an HTML
+            document:
+          </p>
+          <ul>
+            <li>
+              <strong>Selecting Elements:</strong> getElementById,
+              querySelector, etc.
+            </li>
+            <li>
+              <strong>Modifying Content:</strong> innerHTML, textContent,
+              innerText
+            </li>
+            <li>
+              <strong>Modifying Styles:</strong> style property, classList
+            </li>
+            <li>
+              <strong>Creating Elements:</strong> createElement, appendChild
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'dom-examples')"
+          >
+            Examples
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'dom-exercises')">
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'dom-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="dom-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Selecting elements
+let box = document.getElementById("box");
+let items = document.querySelectorAll(".item");
+let firstItem = document.querySelector(".item");
+
+// Modifying content
+box.innerHTML = "Hello World!";
+box.textContent = "Hello again!";
+
+// Modifying styles
+box.style.color = "red";
+box.style.backgroundColor = "yellow";
+box.classList.add("highlight");
+box.classList.remove("old-class");
+
+// Creating elements
+let newDiv = document.createElement("div");
+newDiv.textContent = "I'm a new div!";
+document.body.appendChild(newDiv);
+
+// Removing elements
+let elementToRemove = document.getElementById("remove-me");
+if (elementToRemove) {
+    elementToRemove.parentNode.removeChild(elementToRemove);
+}
+
+// Event handling
+box.addEventListener("click", function() {
+    alert("Box was clicked!");
+});
+          </code></pre>
+        </div>
+
+        <div id="dom-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Dynamic List</h3>
+            <p>
+              Create a function that adds new items to a list when a button is
+              clicked.
+            </p>
+            <button class="run" onclick="runDynamicListExercise()">
+              Run Solution
+            </button>
+            <div id="dynamic-list-exercise-output" class="output"></div>
+            <ul id="item-list">
+              <li>Item 1</li>
+              <li>Item 2</li>
+            </ul>
+            <button id="add-item-btn">Add Item</button>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Color Changer</h3>
+            <p>
+              Create a function that changes the background color of an element
+              when clicked.
+            </p>
+            <button class="run" onclick="runColorChangerExercise()">
+              Run Solution
+            </button>
+            <div
+              id="color-box"
+              style="
+                width: 100px;
+                height: 100px;
+                background-color: lightblue;
+                margin: 10px 0;
+              "
+            >
+              Click me to change color!
+            </div>
+          </div>
+        </div>
+
+        <div id="dom-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>
+                1. Which method selects the first element with a specific class?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q11" value="a" /> getElementById
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q11" value="b" /> querySelector
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q11" value="c" />
+                getElementsByClassName
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. What's the difference between innerHTML and textContent?</p>
+              <div class="test-option">
+                <input type="radio" name="q12" value="a" /> innerHTML parses
+                HTML, textContent doesn't
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q12" value="b" /> textContent is
+                faster
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q12" value="c" /> There's no
+                difference
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkDomTest()">
+              Submit Answers
+            </button>
+            <div id="dom-test-result" class="test-result"></div>
+          </div>
+        </div>
+
+        <div
+          id="box"
+          style="
+            margin-top: 10px;
+            padding: 10px;
+            background: #222;
+            border-radius: 5px;
+          "
+        >
+          (box content)
+        </div>
+        <button
+          class="run"
+          onclick="document.getElementById('box').innerHTML='Hello World!'"
+        >
+          Try It
+        </button>
+      </div>
+
+      <!-- 9. EVENTS -->
+      <div class="lesson" id="events">
+        <h2>9️⃣ Events</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            Events are actions that occur in the browser, which JavaScript can
+            respond to:
+          </p>
+          <ul>
+            <li>
+              <strong>Event Types:</strong> click, mouseover, keydown, submit,
+              load, etc.
+            </li>
+            <li>
+              <strong>Event Handling:</strong> addEventListener, inline event
+              handlers
+            </li>
+            <li>
+              <strong>Event Object:</strong> Contains information about the
+              event
+            </li>
+            <li>
+              <strong>Event Propagation:</strong> Bubbling and capturing phases
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'events-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'events-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'events-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="events-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Adding event listeners
+document.getElementById("btn").addEventListener("click", function(){
+    alert("Clicked!");
+});
+
+// Event object
+document.getElementById("btn").addEventListener("click", function(event){
+    console.log(event.target); // The element that was clicked
+    console.log(event.type);   // "click"
+});
+
+// Multiple events
+let element = document.getElementById("myElement");
+element.addEventListener("mouseover", function() {
+    this.style.backgroundColor = "yellow";
+});
+element.addEventListener("mouseout", function() {
+    this.style.backgroundColor = "";
+});
+
+// Keyboard events
+document.addEventListener("keydown", function(event) {
+    console.log("Key pressed: " + event.key);
+});
+
+// Form events
+document.getElementById("myForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form submission
+    console.log("Form submitted!");
+});
+
+// Event delegation
+document.getElementById("parent").addEventListener("click", function(event) {
+    if (event.target.classList.contains("child")) {
+        console.log("Child clicked: " + event.target.textContent);
+    }
+});
+          </code></pre>
+        </div>
+
+        <div id="events-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Key Logger</h3>
+            <p>Create a program that displays the last key pressed in a div.</p>
+            <button class="run" onclick="runKeyLoggerExercise()">
+              Run Solution
+            </button>
+            <div
+              id="key-display"
+              style="padding: 10px; background: #333; margin: 10px 0"
+            >
+              Press any key...
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Double Click Counter</h3>
+            <p>
+              Create a counter that increments when an element is
+              double-clicked.
+            </p>
+            <button class="run" onclick="runDoubleClickExercise()">
+              Run Solution
+            </button>
+            <div
+              id="double-click-area"
+              style="
+                padding: 20px;
+                background: #444;
+                margin: 10px 0;
+                cursor: pointer;
+              "
+            >
+              Double-click me! Count: <span id="click-count">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="events-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>1. Which method is preferred for adding event listeners?</p>
+              <div class="test-option">
+                <input type="radio" name="q13" value="a" /> Inline HTML
+                attributes
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q13" value="b" /> addEventListener
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q13" value="c" /> onclick property
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. What does event.preventDefault() do?</p>
+              <div class="test-option">
+                <input type="radio" name="q14" value="a" /> Stops event
+                propagation
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q14" value="b" /> Prevents default
+                browser behavior
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q14" value="c" /> Removes the event
+                listener
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkEventsTest()">
+              Submit Answers
+            </button>
+            <div id="events-test-result" class="test-result"></div>
+          </div>
+        </div>
+
+        <button id="btn" class="run">Click Me</button>
+      </div>
+
+      <!-- 10. JSON -->
+      <div class="lesson" id="json">
+        <h2>🔟 JSON Syntax</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            JSON (JavaScript Object Notation) is a lightweight data interchange
+            format:
+          </p>
+          <ul>
+            <li>
+              <strong>Syntax Rules:</strong> Uses key-value pairs, double quotes
+              for strings
+            </li>
+            <li>
+              <strong>Data Types:</strong> String, number, boolean, null,
+              object, array
+            </li>
+            <li><strong>Methods:</strong> JSON.stringify(), JSON.parse()</li>
+            <li>
+              <strong>Usage:</strong> Data exchange between client and server
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'json-examples')"
+          >
+            Examples
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'json-exercises')">
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'json-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="json-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// JavaScript object
+let person = {
+    name: "Sok",
+    age: 20,
+    hobbies: ["reading", "gaming"]
+};
+
+// Convert to JSON string
+let jsonString = JSON.stringify(person);
+console.log(jsonString);
+// '{"name":"Sok","age":20,"hobbies":["reading","gaming"]}'
+
+// Parse JSON string back to object
+let parsedPerson = JSON.parse(jsonString);
+console.log(parsedPerson.name); // "Sok"
+
+// JSON with nested objects
+let company = {
+    name: "Tech Corp",
+    employees: [
+        { name: "Alice", position: "Developer" },
+        { name: "Bob", position: "Designer" }
+    ]
+};
+
+let companyJSON = JSON.stringify(company);
+console.log(companyJSON);
+
+// Handling invalid JSON
+try {
+    let invalidJSON = '{"name": "John", "age": }';
+    let parsed = JSON.parse(invalidJSON);
+} catch (error) {
+    console.log("Invalid JSON:", error.message);
+}
+
+// Pretty printing JSON
+let prettyJSON = JSON.stringify(person, null, 2);
+console.log(prettyJSON);
+          </code></pre>
+        </div>
+
+        <div id="json-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: JSON Validator</h3>
+            <p>Create a function that validates if a string is valid JSON.</p>
+            <button class="run" onclick="runJsonValidatorExercise()">
+              Run Solution
+            </button>
+            <div id="json-validator-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Deep Clone with JSON</h3>
+            <p>Use JSON methods to create a deep clone of an object.</p>
+            <button class="run" onclick="runDeepCloneExercise()">
+              Run Solution
+            </button>
+            <div id="deep-clone-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="json-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>
+                1. Which method converts a JavaScript object to a JSON string?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q15" value="a" /> JSON.parse()
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q15" value="b" /> JSON.stringify()
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q15" value="c" /> JSON.convert()
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>
+                2. What's a key difference between JavaScript objects and JSON?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q16" value="a" /> JSON requires double
+                quotes for keys
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q16" value="b" /> JavaScript objects
+                can have functions
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q16" value="c" /> Both of the above
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkJsonTest()">
+              Submit Answers
+            </button>
+            <div id="json-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. CLASSES -->
+      <div class="lesson" id="classes">
+        <h2>1️⃣1️⃣ Classes & OOP (ES6)</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            Classes in JavaScript provide a cleaner way to work with objects and
+            inheritance:
+          </p>
+          <ul>
+            <li><strong>Class Declaration:</strong> class ClassName { }</li>
+            <li>
+              <strong>Constructor:</strong> Special method for initializing
+              objects
+            </li>
+            <li><strong>Methods:</strong> Functions defined inside a class</li>
+            <li>
+              <strong>Inheritance:</strong> extends keyword for creating
+              subclasses
+            </li>
+            <li>
+              <strong>Encapsulation:</strong> Private fields using # prefix
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'classes-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'classes-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'classes-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="classes-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Basic class
+class Car{
+   constructor(name, year){
+      this.name = name;
+      this.year = year;
+   }
+   
+   drive(){
+      console.log(this.name + " is driving");
+   }
+   
+   getAge(){
+      let currentYear = new Date().getFullYear();
+      return currentYear - this.year;
+   }
+}
+
+let myCar = new Car("Toyota", 2018);
+myCar.drive(); // "Toyota is driving"
+console.log(myCar.getAge()); // Current year - 2018
+
+// Class inheritance
+class ElectricCar extends Car {
+   constructor(name, year, battery){
+      super(name, year); // Call parent constructor
+      this.battery = battery;
+   }
+   
+   charge(){
+      console.log(this.name + " is charging");
+   }
+   
+   // Override parent method
+   drive(){
+      console.log(this.name + " is driving silently");
+   }
+}
+
+let myElectricCar = new ElectricCar("Tesla", 2020, "100kWh");
+myElectricCar.drive(); // "Tesla is driving silently"
+myElectricCar.charge(); // "Tesla is charging"
+
+// Static methods
+class MathHelper {
+   static add(a, b) {
+      return a + b;
+   }
+   
+   static multiply(a, b) {
+      return a * b;
+   }
+}
+
+console.log(MathHelper.add(5, 3)); // 8
+console.log(MathHelper.multiply(5, 3)); // 15
+
+// Private fields (ES2022)
+class BankAccount {
+   #balance = 0; // Private field
+   
+   deposit(amount) {
+      this.#balance += amount;
+   }
+   
+   getBalance() {
+      return this.#balance;
+   }
+}
+
+let account = new BankAccount();
+account.deposit(100);
+console.log(account.getBalance()); // 100
+// console.log(account.#balance); // Error: Private field
+          </code></pre>
+        </div>
+
+        <div id="classes-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Rectangle Class</h3>
+            <p>
+              Create a Rectangle class with methods to calculate area and
+              perimeter.
+            </p>
+            <button class="run" onclick="runRectangleExercise()">
+              Run Solution
+            </button>
+            <div id="rectangle-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Student Class</h3>
+            <p>
+              Create a Student class that extends a Person class and adds a
+              grade property.
+            </p>
+            <button class="run" onclick="runStudentExercise()">
+              Run Solution
+            </button>
+            <div id="student-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="classes-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>
+                1. What keyword is used to call the parent class constructor?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q17" value="a" /> parent
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q17" value="b" /> super
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q17" value="c" /> base
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>2. How do you define a private field in a class?</p>
+              <div class="test-option">
+                <input type="radio" name="q18" value="a" /> Using the private
+                keyword
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q18" value="b" /> Prefixing with #
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q18" value="c" /> Using underscores
+                (_field)
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkClassesTest()">
+              Submit Answers
+            </button>
+            <div id="classes-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. MODULES -->
+      <div class="lesson" id="modules">
+        <h2>1️⃣2️⃣ Modules (import/export)</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>JavaScript modules allow you to split code into multiple files:</p>
+          <ul>
+            <li>
+              <strong>Export:</strong> Makes functions, classes, or variables
+              available to other modules
+            </li>
+            <li>
+              <strong>Import:</strong> Brings exported values from other modules
+            </li>
+            <li>
+              <strong>Default Export:</strong> One default export per module
+            </li>
+            <li>
+              <strong>Named Export:</strong> Multiple named exports per module
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'modules-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'modules-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'modules-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="modules-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// file1.js - Named exports
+export const x = 10;
+export const y = 20;
+export function add(a, b) {
+    return a + b;
+}
+export class Calculator {
+    multiply(a, b) {
+        return a * b;
+    }
+}
+
+// Alternative: Export at the end
+const a = 5;
+const b = 15;
+function subtract(a, b) { return a - b; }
+export { a, b, subtract };
+
+// file2.js - Importing named exports
+import { x, y, add, Calculator } from './file1.js';
+console.log(x); // 10
+console.log(add(5, 3)); // 8
+
+// Import with aliases
+import { x as first, y as second } from './file1.js';
+
+// Import all as an object
+import * as math from './file1.js';
+console.log(math.x); // 10
+
+// file3.js - Default export
+const greeting = "Hello World!";
+export default greeting;
+
+// file4.js - Importing default export
+import greeting from './file3.js';
+console.log(greeting); // "Hello World!"
+
+// Mixed imports
+import greeting, { x, y } from './file1.js';
+
+// Dynamic imports (load modules on demand)
+async function loadModule() {
+    const module = await import('./file1.js');
+    console.log(module.x); // 10
+}
+          </code></pre>
+        </div>
+
+        <div id="modules-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Math Module</h3>
+            <p>
+              Create a math module with functions for basic operations and
+              import it.
+            </p>
+            <button class="run" onclick="runMathModuleExercise()">
+              Run Solution
+            </button>
+            <div id="math-module-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Dynamic Module Loading</h3>
+            <p>
+              Create a button that dynamically loads and uses a module when
+              clicked.
+            </p>
+            <button class="run" onclick="runDynamicModuleExercise()">
+              Run Solution
+            </button>
+            <div id="dynamic-module-exercise-output" class="output"></div>
+            <button id="load-module-btn">Load Module</button>
+          </div>
+        </div>
+
+        <div id="modules-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>1. How many default exports can a module have?</p>
+              <div class="test-option">
+                <input type="radio" name="q19" value="a" /> One
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q19" value="b" /> Multiple
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q19" value="c" /> Unlimited
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>
+                2. What's the correct syntax for importing a default export?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q20" value="a" /> import { default }
+                from './module.js'
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q20" value="b" /> import default from
+                './module.js'
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q20" value="c" /> import * as default
+                from './module.js'
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkModulesTest()">
+              Submit Answers
+            </button>
+            <div id="modules-test-result" class="test-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. PROMISE & ASYNC -->
+      <div class="lesson" id="async">
+        <h2>1️⃣3️⃣ Promise & Async/Await</h2>
+
+        <div class="doc-section">
+          <h3>📚 Documentation</h3>
+          <p>
+            Promises and async/await handle asynchronous operations in
+            JavaScript:
+          </p>
+          <ul>
+            <li>
+              <strong>Promise:</strong> Object representing eventual
+              completion/failure of async operation
+            </li>
+            <li>
+              <strong>Async Functions:</strong> Functions that return promises
+            </li>
+            <li>
+              <strong>Await:</strong> Pauses execution until promise is resolved
+            </li>
+            <li>
+              <strong>Error Handling:</strong> try/catch with async/await,
+              .catch() with promises
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-buttons">
+          <button
+            class="tab-button active"
+            onclick="openTab(event, 'async-examples')"
+          >
+            Examples
+          </button>
+          <button
+            class="tab-button"
+            onclick="openTab(event, 'async-exercises')"
+          >
+            Exercises
+          </button>
+          <button class="tab-button" onclick="openTab(event, 'async-test')">
+            Test
+          </button>
+        </div>
+
+        <div id="async-examples" class="tab-content active">
+          <button class="toggle" onclick="toggleCode(this)">Show Code</button>
+          <pre class="language-javascript hidden"><code>
+// Creating a Promise
+const myPromise = new Promise((resolve, reject) => {
+    // Asynchronous operation
+    setTimeout(() => {
+        const success = true; // Simulate success/failure
+        if (success) {
+            resolve("Data loaded successfully!");
+        } else {
+            reject("Error loading data!");
+        }
+    }, 2000);
+});
+
+// Using a Promise
+myPromise
+    .then(result => {
+        console.log(result); // "Data loaded successfully!"
+    })
+    .catch(error => {
+        console.error(error); // "Error loading data!"
+    });
+
+// Async/Await
+async function getData(){
+    try {
+        let r = await fetch("https://jsonplaceholder.typicode.com/users/1");
+        let data = await r.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+// Multiple promises with Promise.all
+async function fetchMultipleUsers() {
+    try {
+        const [user1, user2] = await Promise.all([
+            fetch("https://jsonplaceholder.typicode.com/users/1").then(r => r.json()),
+            fetch("https://jsonplaceholder.typicode.com/users/2").then(r => r.json())
+        ]);
+        console.log("User 1:", user1);
+        console.log("User 2:", user2);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    }
+}
+
+// Promise chaining
+fetch("https://jsonplaceholder.typicode.com/users/1")
+    .then(response => response.json())
+    .then(user => {
+        console.log(user);
+        return fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`);
+    })
+    .then(response => response.json())
+    .then(posts => {
+        console.log(posts);
+    })
+    .catch(error => {
+        console.error("Error in promise chain:", error);
+    });
+          </code></pre>
+        </div>
+
+        <div id="async-exercises" class="tab-content">
+          <div class="exercise">
+            <h3>Exercise 1: Timeout Promise</h3>
+            <p>
+              Create a function that returns a promise resolving after a
+              specified delay.
+            </p>
+            <button class="run" onclick="runTimeoutExercise()">
+              Run Solution
+            </button>
+            <div id="timeout-exercise-output" class="output"></div>
+          </div>
+
+          <div class="exercise">
+            <h3>Exercise 2: Sequential API Calls</h3>
+            <p>
+              Make API calls sequentially, using the result of one call in the
+              next.
+            </p>
+            <button class="run" onclick="runSequentialApiExercise()">
+              Run Solution
+            </button>
+            <div id="sequential-api-exercise-output" class="output"></div>
+          </div>
+        </div>
+
+        <div id="async-test" class="tab-content">
+          <div class="test-container">
+            <h3>Test Your Knowledge</h3>
+            <div class="test-question">
+              <p>1. What does the await keyword do?</p>
+              <div class="test-option">
+                <input type="radio" name="q21" value="a" /> Pauses execution
+                until promise settles
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q21" value="b" /> Creates a new
+                promise
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q21" value="c" /> Throws an error if
+                promise rejects
+              </div>
+            </div>
+
+            <div class="test-question">
+              <p>
+                2. Which method runs multiple promises in parallel and waits for
+                all to complete?
+              </p>
+              <div class="test-option">
+                <input type="radio" name="q22" value="a" /> Promise.race()
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q22" value="b" /> Promise.all()
+              </div>
+              <div class="test-option">
+                <input type="radio" name="q22" value="c" /> Promise.any()
+              </div>
+            </div>
+
+            <button class="test-submit" onclick="checkAsyncTest()">
+              Submit Answers
+            </button>
+            <div id="async-test-result" class="test-result"></div>
+          </div>
+        </div>
+
+        <button class="run" onclick="runAsync()">Fetch Example</button>
+        <div id="output" class="output"></div>
+      </div>
+    </section>
+
+    <footer>
+      Ven. ENG CHANTHOEURN <strong>HTML + CSS + JavaScript </strong>
+    </footer>
+
+    <script>
+      // Toggle code visibility
+      function toggleCode(btn) {
+        const pre = btn.nextElementSibling;
+        pre.classList.toggle("hidden");
+        btn.textContent = pre.classList.contains("hidden")
+          ? "Show Code"
+          : "Hide Code";
+      }
+
+      // Tab navigation
+      function openTab(evt, tabName) {
+        const tabcontent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].classList.remove("active");
+        }
+
+        const tabbuttons = document.getElementsByClassName("tab-button");
+        for (let i = 0; i < tabbuttons.length; i++) {
+          tabbuttons[i].classList.remove("active");
+        }
+
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+      }
+
+      // Event Example
+      document.getElementById("btn").addEventListener("click", function () {
+        alert("Clicked!");
+      });
+
+      // Async Example
+      async function runAsync() {
+        const output = document.getElementById("output");
+        output.textContent = "Fetching data...";
+        try {
+          let r = await fetch("https://jsonplaceholder.typicode.com/users/1");
+          let data = await r.json();
+          output.textContent =
+            "✅ Name: " + data.name + " | Email: " + data.email;
+        } catch (e) {
+          output.textContent = "❌ Error fetching data";
+        }
+      }
+
+      // ========== OPERATORS EXERCISES ==========
+      function runExercise1() {
+        const output = document.getElementById("exercise1-output");
+        // Calculate area of rectangle
+        let width = 5;
+        let height = 10;
+        let area = width * height;
+        output.textContent = `Rectangle area: ${width} * ${height} = ${area}`;
+      }
+
+      function runExercise2() {
+        const output = document.getElementById("exercise2-output");
+        // Compare two numbers
+        function compareNumbers(a, b) {
+          if (a > b) return a;
+          if (b > a) return b;
+          return "Equal";
+        }
+
+        let result1 = compareNumbers(5, 10);
+        let result2 = compareNumbers(7, 7);
+        output.textContent = `compareNumbers(5, 10) = ${result1}, compareNumbers(7, 7) = ${result2}`;
+      }
+
+      // ========== CONDITIONAL EXERCISES ==========
+      function runGradeExercise() {
+        const output = document.getElementById("grade-exercise-output");
+        // Grade calculator
+        function getGrade(score) {
+          if (score >= 90) return "A";
+          if (score >= 80) return "B";
+          if (score >= 70) return "C";
+          if (score >= 60) return "D";
+          return "F";
+        }
+
+        output.textContent = `Score 85: ${getGrade(85)}, Score 92: ${getGrade(
+          92
+        )}, Score 55: ${getGrade(55)}`;
+      }
+
+      function runDayExercise() {
+        const output = document.getElementById("day-exercise-output");
+        // Day of week
+        function getDay(dayNumber) {
+          switch (dayNumber) {
+            case 1:
+              return "Monday";
+            case 2:
+              return "Tuesday";
+            case 3:
+              return "Wednesday";
+            case 4:
+              return "Thursday";
+            case 5:
+              return "Friday";
+            case 6:
+              return "Saturday";
+            case 7:
+              return "Sunday";
+            default:
+              return "Invalid day";
+          }
+        }
+
+        output.textContent = `Day 3: ${getDay(3)}, Day 7: ${getDay(
+          7
+        )}, Day 9: ${getDay(9)}`;
+      }
+
+      // ========== LOOPS EXERCISES ==========
+      function runSumExercise() {
+        const output = document.getElementById("sum-exercise-output");
+        // Sum of numbers from 1 to n
+        function sumToN(n) {
+          let sum = 0;
+          for (let i = 1; i <= n; i++) {
+            sum += i;
+          }
+          return sum;
+        }
+
+        output.textContent = `Sum from 1 to 10: ${sumToN(10)}`;
+      }
+
+      function runFactorialExercise() {
+        const output = document.getElementById("factorial-exercise-output");
+        // Factorial
+        function factorial(n) {
+          let result = 1;
+          for (let i = 2; i <= n; i++) {
+            result *= i;
+          }
+          return result;
+        }
+
+        output.textContent = `Factorial of 5: ${factorial(5)}`;
+      }
+
+      // ========== FUNCTIONS EXERCISES ==========
+      function runPowerExercise() {
+        const output = document.getElementById("power-exercise-output");
+        // Power function
+        function power(base, exponent) {
+          let result = 1;
+          for (let i = 0; i < exponent; i++) {
+            result *= base;
+          }
+          return result;
+        }
+
+        output.textContent = `2^3 = ${power(2, 3)}, 5^2 = ${power(5, 2)}`;
+      }
+
+      function runPalindromeExercise() {
+        const output = document.getElementById("palindrome-exercise-output");
+        // Palindrome checker
+        function isPalindrome(str) {
+          const cleaned = str.toLowerCase().replace(/[^a-z0-9]/g, "");
+          const reversed = cleaned.split("").reverse().join("");
+          return cleaned === reversed;
+        }
+
+        output.textContent = `"racecar": ${isPalindrome(
+          "racecar"
+        )}, "hello": ${isPalindrome("hello")}`;
+      }
+
+      // ========== OBJECTS & ARRAYS EXERCISES ==========
+      function runObjectExercise() {
+        const output = document.getElementById("object-exercise-output");
+        // Object with method
+        let person = {
+          name: "John",
+          age: 25,
+          city: "New York",
+          greet: function () {
+            return `Hello, my name is ${this.name} and I'm from ${this.city}`;
+          },
+        };
+
+        output.textContent = person.greet();
+      }
+
+      function runArrayExercise() {
+        const output = document.getElementById("array-exercise-output");
+        // Array operations
+        let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let result = numbers
+          .filter((num) => num % 2 !== 0) // Keep odd numbers
+          .map((num) => num * 2); // Double them
+
+        output.textContent = `Original: [${numbers}], Result: [${result}]`;
+      }
+
+      // ========== DOM EXERCISES ==========
+      function runDynamicListExercise() {
+        const output = document.getElementById("dynamic-list-exercise-output");
+        output.textContent =
+          "Click the 'Add Item' button to add items to the list";
+
+        document
+          .getElementById("add-item-btn")
+          .addEventListener("click", function () {
+            const list = document.getElementById("item-list");
+            const itemCount = list.children.length;
+            const newItem = document.createElement("li");
+            newItem.textContent = `Item ${itemCount + 1}`;
+            list.appendChild(newItem);
+          });
+      }
+
+      function runColorChangerExercise() {
+        const colorBox = document.getElementById("color-box");
+        const colors = [
+          "lightblue",
+          "lightgreen",
+          "lightcoral",
+          "lightyellow",
+          "lightpink",
+        ];
+        let colorIndex = 0;
+
+        colorBox.addEventListener("click", function () {
+          colorIndex = (colorIndex + 1) % colors.length;
+          this.style.backgroundColor = colors[colorIndex];
+        });
+      }
+
+      // ========== EVENTS EXERCISES ==========
+      function runKeyLoggerExercise() {
+        const keyDisplay = document.getElementById("key-display");
+
+        document.addEventListener("keydown", function (event) {
+          keyDisplay.textContent = `Last key pressed: ${event.key} (Code: ${event.code})`;
+        });
+      }
+
+      function runDoubleClickExercise() {
+        const clickArea = document.getElementById("double-click-area");
+        const clickCount = document.getElementById("click-count");
+        let count = 0;
+
+        clickArea.addEventListener("dblclick", function () {
+          count++;
+          clickCount.textContent = count;
+        });
+      }
+
+      // ========== JSON EXERCISES ==========
+      function runJsonValidatorExercise() {
+        const output = document.getElementById(
+          "json-validator-exercise-output"
+        );
+
+        function isValidJSON(str) {
+          try {
+            JSON.parse(str);
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        const validJSON = '{"name": "John", "age": 30}';
+        const invalidJSON = '{"name": "John", "age": }';
+
+        output.textContent = `Valid JSON: ${isValidJSON(
+          validJSON
+        )}, Invalid JSON: ${isValidJSON(invalidJSON)}`;
+      }
+
+      function runDeepCloneExercise() {
+        const output = document.getElementById("deep-clone-exercise-output");
+
+        function deepClone(obj) {
+          return JSON.parse(JSON.stringify(obj));
+        }
+
+        const original = {
+          name: "John",
+          age: 30,
+          hobbies: ["reading", "gaming"],
+          address: {
+            street: "123 Main St",
+            city: "New York",
+          },
+        };
+
+        const clone = deepClone(original);
+        clone.name = "Jane";
+        clone.hobbies.push("cooking");
+
+        output.textContent = `Original name: ${original.name}, Clone name: ${clone.name}`;
+      }
+
+      // ========== CLASSES EXERCISES ==========
+      function runRectangleExercise() {
+        const output = document.getElementById("rectangle-exercise-output");
+
+        class Rectangle {
+          constructor(width, height) {
+            this.width = width;
+            this.height = height;
+          }
+
+          area() {
+            return this.width * this.height;
+          }
+
+          perimeter() {
+            return 2 * (this.width + this.height);
+          }
+        }
+
+        const rect = new Rectangle(5, 10);
+        output.textContent = `Rectangle (5x10): Area = ${rect.area()}, Perimeter = ${rect.perimeter()}`;
+      }
+
+      function runStudentExercise() {
+        const output = document.getElementById("student-exercise-output");
+
+        class Person {
+          constructor(name, age) {
+            this.name = name;
+            this.age = age;
+          }
+
+          introduce() {
+            return `Hello, I'm ${this.name} and I'm ${this.age} years old.`;
+          }
+        }
+
+        class Student extends Person {
+          constructor(name, age, grade) {
+            super(name, age);
+            this.grade = grade;
+          }
+
+          study() {
+            return `${this.name} is studying hard for grade ${this.grade}.`;
+          }
+        }
+
+        const student = new Student("Alice", 20, "A");
+        output.textContent = `${student.introduce()} ${student.study()}`;
+      }
+
+      // ========== MODULES EXERCISES ==========
+      function runMathModuleExercise() {
+        const output = document.getElementById("math-module-exercise-output");
+
+        // In a real module, this would be in a separate file
+        const mathModule = {
+          add: (a, b) => a + b,
+          subtract: (a, b) => a - b,
+          multiply: (a, b) => a * b,
+          divide: (a, b) => a / b,
+        };
+
+        output.textContent = `5 + 3 = ${mathModule.add(
+          5,
+          3
+        )}, 10 * 2 = ${mathModule.multiply(10, 2)}`;
+      }
+
+      function runDynamicModuleExercise() {
+        const output = document.getElementById(
+          "dynamic-module-exercise-output"
+        );
+        const loadBtn = document.getElementById("load-module-btn");
+
+        loadBtn.addEventListener("click", async function () {
+          // Simulate dynamic module loading
+          const fakeModule = {
+            greet: (name) => `Hello, ${name}!`,
+            farewell: (name) => `Goodbye, ${name}!`,
+          };
+
+          output.textContent = `${fakeModule.greet(
+            "World"
+          )} ${fakeModule.farewell("World")}`;
+        });
+      }
+
+      // ========== ASYNC EXERCISES ==========
+      function runTimeoutExercise() {
+        const output = document.getElementById("timeout-exercise-output");
+        output.textContent = "Starting timeout...";
+
+        function delay(ms) {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(`Resolved after ${ms}ms`);
+            }, ms);
+          });
+        }
+
+        delay(2000).then((result) => {
+          output.textContent = result;
+        });
+      }
+
+      function runSequentialApiExercise() {
+        const output = document.getElementById(
+          "sequential-api-exercise-output"
+        );
+        output.textContent = "Making sequential API calls...";
+
+        async function sequentialCalls() {
+          try {
+            // First call
+            const userResponse = await fetch(
+              "https://jsonplaceholder.typicode.com/users/1"
+            );
+            const user = await userResponse.json();
+
+            // Second call using result from first
+            const postsResponse = await fetch(
+              `https://jsonplaceholder.typicode.com/posts?userId=${user.id}`
+            );
+            const posts = await postsResponse.json();
+
+            output.textContent = `User: ${user.name}, Number of posts: ${posts.length}`;
+          } catch (error) {
+            output.textContent = `Error: ${error.message}`;
+          }
+        }
+
+        sequentialCalls();
+      }
+
+      // ========== TEST FUNCTIONS ==========
+      function checkOperatorsTest() {
+        const resultDiv = document.getElementById("operators-test-result");
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q1 && q1.value === "b") {
+          score++;
+          feedback +=
+            "Q1: Correct! 5 + '5' results in '55' due to type coercion.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. 5 + '5' results in '55' (string concatenation).<br>";
+        }
+
+        if (q2 && q2.value === "b") {
+          score++;
+          feedback += "Q2: Correct! === checks both value and type.<br>";
+        } else {
+          feedback += "Q2: Incorrect. === checks both value and type.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkConditionalTest() {
+        const resultDiv = document.getElementById("conditional-test-result");
+        const q3 = document.querySelector('input[name="q3"]:checked');
+        const q4 = document.querySelector('input[name="q4"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q3 && q3.value === "b") {
+          score++;
+          feedback += "Q1: Correct! 0 is a falsy value in JavaScript.<br>";
+        } else {
+          feedback += "Q1: Incorrect. 0 is a falsy value in JavaScript.<br>";
+        }
+
+        if (q4 && q4.value === "b") {
+          score++;
+          feedback +=
+            "Q2: Correct! The break statement exits a switch case.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. The break statement exits a switch case.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkLoopsTest() {
+        const resultDiv = document.getElementById("loops-test-result");
+        const q5 = document.querySelector('input[name="q5"]:checked');
+        const q6 = document.querySelector('input[name="q6"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q5 && q5.value === "c") {
+          score++;
+          feedback +=
+            "Q1: Correct! do...while always executes at least once.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. do...while always executes at least once.<br>";
+        }
+
+        if (q6 && q6.value === "b") {
+          score++;
+          feedback +=
+            "Q2: Correct! 'continue' skips to the next iteration.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. 'continue' skips to the next iteration.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkFunctionsTest() {
+        const resultDiv = document.getElementById("functions-test-result");
+        const q7 = document.querySelector('input[name="q7"]:checked');
+        const q8 = document.querySelector('input[name="q8"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q7 && q7.value === "a") {
+          score++;
+          feedback += "Q1: Correct! Function declarations are hoisted.<br>";
+        } else {
+          feedback += "Q1: Incorrect. Function declarations are hoisted.<br>";
+        }
+
+        if (q8 && q8.value === "c") {
+          score++;
+          feedback +=
+            "Q2: Correct! Arrow functions inherit 'this' from their lexical context.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. Arrow functions inherit 'this' from their lexical context.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkObjectsTest() {
+        const resultDiv = document.getElementById("objects-test-result");
+        const q9 = document.querySelector('input[name="q9"]:checked');
+        const q10 = document.querySelector('input[name="q10"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q9 && q9.value === "a") {
+          score++;
+          feedback +=
+            "Q1: Correct! push() adds elements to the end of an array.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. push() adds elements to the end of an array.<br>";
+        }
+
+        if (q10 && q10.value === "b") {
+          score++;
+          feedback +=
+            "Q2: Correct! Use bracket notation for property names with spaces.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. Use bracket notation for property names with spaces.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkDomTest() {
+        const resultDiv = document.getElementById("dom-test-result");
+        const q11 = document.querySelector('input[name="q11"]:checked');
+        const q12 = document.querySelector('input[name="q12"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q11 && q11.value === "b") {
+          score++;
+          feedback +=
+            "Q1: Correct! querySelector selects the first matching element.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. querySelector selects the first matching element.<br>";
+        }
+
+        if (q12 && q12.value === "a") {
+          score++;
+          feedback +=
+            "Q2: Correct! innerHTML parses HTML, textContent doesn't.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. innerHTML parses HTML, textContent doesn't.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkEventsTest() {
+        const resultDiv = document.getElementById("events-test-result");
+        const q13 = document.querySelector('input[name="q13"]:checked');
+        const q14 = document.querySelector('input[name="q14"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q13 && q13.value === "b") {
+          score++;
+          feedback +=
+            "Q1: Correct! addEventListener is the preferred method.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. addEventListener is the preferred method.<br>";
+        }
+
+        if (q14 && q14.value === "b") {
+          score++;
+          feedback +=
+            "Q2: Correct! preventDefault() prevents default browser behavior.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. preventDefault() prevents default browser behavior.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkJsonTest() {
+        const resultDiv = document.getElementById("json-test-result");
+        const q15 = document.querySelector('input[name="q15"]:checked');
+        const q16 = document.querySelector('input[name="q16"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q15 && q15.value === "b") {
+          score++;
+          feedback +=
+            "Q1: Correct! JSON.stringify() converts objects to JSON strings.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. JSON.stringify() converts objects to JSON strings.<br>";
+        }
+
+        if (q16 && q16.value === "c") {
+          score++;
+          feedback += "Q2: Correct! Both differences are true.<br>";
+        } else {
+          feedback += "Q2: Incorrect. Both differences are true.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkClassesTest() {
+        const resultDiv = document.getElementById("classes-test-result");
+        const q17 = document.querySelector('input[name="q17"]:checked');
+        const q18 = document.querySelector('input[name="q18"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q17 && q17.value === "b") {
+          score++;
+          feedback += "Q1: Correct! super() calls the parent constructor.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. super() calls the parent constructor.<br>";
+        }
+
+        if (q18 && q18.value === "b") {
+          score++;
+          feedback += "Q2: Correct! Private fields use # prefix (ES2022).<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. Private fields use # prefix (ES2022).<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkModulesTest() {
+        const resultDiv = document.getElementById("modules-test-result");
+        const q19 = document.querySelector('input[name="q19"]:checked');
+        const q20 = document.querySelector('input[name="q20"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q19 && q19.value === "a") {
+          score++;
+          feedback +=
+            "Q1: Correct! A module can have only one default export.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. A module can have only one default export.<br>";
+        }
+
+        if (q20 && q20.value === "b") {
+          score++;
+          feedback +=
+            "Q2: Correct! Default exports are imported without curly braces.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. Default exports are imported without curly braces.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+
+      function checkAsyncTest() {
+        const resultDiv = document.getElementById("async-test-result");
+        const q21 = document.querySelector('input[name="q21"]:checked');
+        const q22 = document.querySelector('input[name="q22"]:checked');
+
+        let score = 0;
+        let feedback = "";
+
+        if (q21 && q21.value === "a") {
+          score++;
+          feedback +=
+            "Q1: Correct! await pauses execution until the promise settles.<br>";
+        } else {
+          feedback +=
+            "Q1: Incorrect. await pauses execution until the promise settles.<br>";
+        }
+
+        if (q22 && q22.value === "b") {
+          score++;
+          feedback +=
+            "Q2: Correct! Promise.all() runs promises in parallel.<br>";
+        } else {
+          feedback +=
+            "Q2: Incorrect. Promise.all() runs promises in parallel.<br>";
+        }
+
+        resultDiv.innerHTML = `Score: ${score}/2<br>${feedback}`;
+        resultDiv.className = `test-result ${
+          score === 2 ? "correct" : "incorrect"
+        }`;
+        resultDiv.style.display = "block";
+      }
+    </script>
+  </body>
+</html>
