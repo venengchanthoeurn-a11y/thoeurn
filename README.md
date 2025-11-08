@@ -255,7 +255,6 @@
 
   <body>
     <header>
-      <h1>JavaScript Lesson</h1>
       <h2 style="color: greenyellow">Prepared By Ven.Thoeurn</h2>
     </header>
 
